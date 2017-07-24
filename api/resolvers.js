@@ -3,41 +3,41 @@ import * as json from './jsonServer';
 
 const resolveFunctions = {
     Query: {
-        users() {
+        users: () => {
              return json.getUsers();
         },
-        user(root, { id }) {
-            return json.getUser(id)
+        user: (root, { id }, context) => {
+            return context.loaders.User.load(id);
         },
-        items() {
+        items: () => {
             return json.getItems();
         },
-        item(root, { id }) {
-            return json.getItem(id);
+        item: (root, { id }, context) => {
+            return context.loaders.Item.load(id);
         }
     },
 
     User: {
-        items(user) {
-            return json.getFilteredItemOwner(user);
+        items: (user, args, context) => {
+            return context.loaders.UserOwnedItems.load(user.id);
         },
-        borrowed(user) {
-            return json.getFilteredItemBorrower(user);
+        borrowed: (user, args, context) => {
+            return context.loaders.UserBorrowedItems.load(user.id);
         }
     },
 
     Item: {
-        itemOwner(item) {
+        itemOwner: (item) => {
             return json.getUser(item.itemOwner);
         },
-        borrower(item) {
+        borrower: (item) => {
             if (!item.borrower) return null;
             return json.getUser(item.borrower);
         }
     },
 
     Mutation: {
-        addItem(root, args) {
+        addItem: (root, args) => {
             const newItem = {
                 title: args.title,
                 description: args.description,

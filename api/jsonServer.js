@@ -24,14 +24,14 @@ export function getItem(id) {
     .catch(errors => console.log(errors));
 }
 
-export function getFilteredItemOwner(user) {
-    return fetch(`http://localhost:3001/items/?itemOwner=${user.id}`)
+export function getUserOwnedItems(id) {
+    return fetch(`http://localhost:3001/items/?itemOwner=${id}`)
         .then(response => response.json())
         .catch(errors => console.log(errors));
 }
 
-export function getFilteredItemBorrower(user) {
-    return fetch(`http://localhost:3001/items/?borrower=${user.id}`)
+export function getUserBorrowedItems(id) {
+    return fetch(`http://localhost:3001/items/?borrower=${id}`)
         .then(response => response.json())
         .catch(errors => console.log(errors));
 }
