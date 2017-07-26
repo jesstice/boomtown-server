@@ -29,13 +29,12 @@ const resolveFunctions = {
     },
 
     Item: {
-        itemOwner: (item) => {
-            // return context.loaders.User.load(item.itemOwner);
-            return json.getUser(item.itemOwner);
+        itemOwner: (item, args, context) => {
+            return context.loaders.User.load(item.itemOwner);
         },
-        borrower: (item) => {
+        borrower: (item, args, context) => {
             if (!item.borrower) return null;
-            return json.getUser(item.borrower);
+            return context.loaders.User.load(item.borrower);
         }
     },
 

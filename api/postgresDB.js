@@ -1,13 +1,5 @@
 import { pool } from '../database/index';
 
-function renameId(rows) {
-    return rows.map(row => Object.keys(row).reduce((acc, user) => {
-           acc = {...row, id: row.userid};
-           delete acc.userid;
-           return acc;
-        }));
-}
-
 export function getUsers() {
     return pool.query(`SELECT * FROM user_profiles`)
         .then(response => renameId(response.rows))
@@ -30,4 +22,12 @@ export function getItem(id) {
     return pool.query(`SELECT * FROM items WHERE userid='${id}'`)
         .then(response => response.rows)
         .catch(errors => console.log('Error executing item query', error.stack));
+}
+
+function renameId(rows) {
+    return rows.map(row => Object.keys(row).reduce((acc, user) => {
+           acc = {...row, id: row.userid};
+           delete acc.userid;
+           return acc;
+        }));
 }
