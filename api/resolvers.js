@@ -1,10 +1,12 @@
 import fetch from 'node-fetch';
 import * as json from './jsonServer';
+import * as psql from './postgresDB';
+import { pool } from '../database/index';
 
 const resolveFunctions = {
     Query: {
         users: () => {
-             return json.getUsers();
+             return psql.getUsers();
         },
         user: (root, { id }, context) => {
             return context.loaders.User.load(id);
@@ -28,6 +30,7 @@ const resolveFunctions = {
 
     Item: {
         itemOwner: (item) => {
+            // return context.loaders.User.load(item.itemOwner);
             return json.getUser(item.itemOwner);
         },
         borrower: (item) => {

@@ -8,7 +8,7 @@ export function getUsers() {
 
 export function getUser(id) {
     return fetch(`http://localhost:3001/users/${id}`)
-    .then(response => response.json())
+    .then(response => response)
     .catch(errors => console.log(errors));
 }
 

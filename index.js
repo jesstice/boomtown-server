@@ -1,3 +1,4 @@
+import { } from 'dotenv/config';
 import express from 'express';
 import bodyParser from 'body-parser';
 import {
@@ -12,6 +13,7 @@ import createLoaders from './api/loaders';
 
 const GQL_PORT = 4400;
 const app = express();
+const PORT = process.env.PORT;
 
 app.use('*', cors());
 // TO DO: see what params to include
