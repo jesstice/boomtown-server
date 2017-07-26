@@ -6,6 +6,7 @@ import {
     graphiqlExpress
 } from 'graphql-server-express';
 import cors from 'cors';
+import admin from './database/firebase';
 
 import schema from './api/schema';
 
@@ -15,13 +16,17 @@ const GQL_PORT = 4400;
 const app = express();
 const PORT = process.env.PORT;
 
-app.use('*', cors());
 // TO DO: see what params to include
+app.use('*', cors());
 
-app.use('/graphql', bodyParser.json(), graphqlExpress({
-    schema,
-    context: {
-        loaders: createLoaders()
+app.use(bodyParser.json());
+
+app.use('/graphql', graphqlExpress(function(req, res) {
+    return {
+        schema,
+        context: {
+            loaders: createLoaders()
+        }
     }
 })); // set up graphql endpoint
 
