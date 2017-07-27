@@ -6,7 +6,7 @@ const typeDefs = `
     type User {
         id: ID!
         email: String!
-        fullName: String!
+        fullname: String!
         bio: String
         items: [Item]
         borrowed: [Item]
@@ -32,6 +32,12 @@ const typeDefs = `
     }
 
     type Mutation {
+        addUser(
+            fullname: String!
+            bio: String
+            email: String!
+            password: String!
+        ): User
         addItem(
             title: String!
             description: String!
