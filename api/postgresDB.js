@@ -78,20 +78,30 @@ export function getUserBorrowedItems(id) {
         .catch(errors => console.log(errors));
 }
 
-export function postNewItem(newItem) {
+export function postNewItem(args) {
     return new Promise(async (resolve, reject) => {
         try {
             // let fbUser = await admin.auth().createUser({
             //     email: args.email,
             //     password: args.password,
             // });
-            // const query = {
-            //     text: 'INSERT INTO user_profiles(fullname, bio, userid) VALUES($1, $2, $3) RETURNING *',
-            //     values: [args.fullname, args.bio, fbUser.uid],
-            // }
-            // let pgUser = await pool.query(query.text, query.values);
+            const itemQuery = {
+                text: 'INSERT INTO items(title, description, itemowner) VALUES($1, $2, $3) RETURNING *',
+                values: [args.title, args.description, args.itemowner],
+            }
+            const newItem = await pool.query(itemQuery);
+
+            function insertTag(tags) {
+                return tags.map(tag => {
+                    return `(${newItem.rows[0].id}, ${tag.id})`
+                }).join(',')
+            }
+            const tagQuery = {
+                text: `INSERT INTO itemtags(itemid, tagid) VALUES ${insertTag(args.tags)}`
+            }
+            const tags = await pool.query(tagQuery);
             // const user = {...pgUser.rows[0], email: fbUser.email, id: fbUser.uid};
-            // resolve(user);
+            resolve({id: newItem.rows[0].id});
         } catch(error) {
             console.log(error);
             reject(error);
@@ -110,7 +120,8 @@ export function getItemTags(id) {
         SELECT items.id, itemtags.tagid
             FROM items INNER JOIN itemtags ON (items.id = itemtags.itemid)
             WHERE items.id = ${id}`)
-        .then(response => response.rows)
+        .then(response => {
+            return response.rows})
         .catch(errors => console.log(errors));
 
 }

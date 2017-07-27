@@ -16,16 +16,21 @@ const typeDefs = `
         id: ID!
         title: String!
         description: String!
-        imageUrl: String
+        imageurl: String
         tags: [Tag!]
         itemowner: User!
         createdOn: Int!
         available: Boolean!
         borrower: User
     }
-
+    
     type Tag {
+        id: Int!
         title: String!
+    }
+
+    input AssignedTag {
+        id: Int!
     }
 
     type Query {
@@ -43,11 +48,12 @@ const typeDefs = `
             email: String!
             password: String!
         ): User
+
         addItem(
             title: String!
             description: String!
-            imageUrl: String
-            tags: [String!]
+            imageurl: String
+            tags: [AssignedTag!]
             itemowner: ID!
         ): Item
     }
