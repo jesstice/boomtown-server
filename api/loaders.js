@@ -1,5 +1,5 @@
 import DataLoader from 'dataloader';
-import { getUser, getItem, getUserOwnedItems, getUserBorrowedItems } from './postgresDB';
+import { getUser, getItem, getUserOwnedItems, getUserBorrowedItems, getItemTags } from './postgresDB';
 
 export default function() {
     return {
@@ -14,6 +14,9 @@ export default function() {
         )),
         Item: new DataLoader(ids => (
             Promise.all(ids.map(id => getItem(id)))
+        )),
+        ItemTags: new DataLoader(ids => (
+            Promise.all(ids.map(id => getItemTags(id)))
         ))
     };
 }

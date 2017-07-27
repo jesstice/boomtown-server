@@ -16,6 +16,9 @@ const resolveFunctions = {
         },
         item: (root, { id }, context) => {
             return context.loaders.Item.load(id);
+        },
+        tags: () => {
+            return psql.getTags();
         }
     },
 
@@ -29,12 +32,15 @@ const resolveFunctions = {
     },
 
     Item: {
-        itemOwner: (item, args, context) => {
-            return context.loaders.User.load(item.itemOwner);
+        itemowner: (item, args, context) => {
+            return context.loaders.User.load(item.itemowner);
         },
         borrower: (item, args, context) => {
             if (!item.borrower) return null;
             return context.loaders.User.load(item.borrower);
+        },
+        tags: (item, args, context) => {
+            return context.loaders.ItemTags.load(item.id);
         }
     },
 
@@ -45,7 +51,7 @@ const resolveFunctions = {
                 description: args.description,
                 imageUrl: args.imageUrl,
                 tags: args.tags,
-                itemOwner: args.itemOwner,
+                itemowner: args.itemowner,
                 createdOn: Math.floor(Date.now() / 1000),
                 available: true,
                 borrower: null

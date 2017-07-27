@@ -17,11 +17,15 @@ const typeDefs = `
         title: String!
         description: String!
         imageUrl: String
-        tags: [String!]
-        itemOwner: User!
+        tags: [Tag!]
+        itemowner: User!
         createdOn: Int!
         available: Boolean!
         borrower: User
+    }
+
+    type Tag {
+        title: String!
     }
 
     type Query {
@@ -29,6 +33,7 @@ const typeDefs = `
         user(id: ID!): User
         items: [Item]
         item(id: ID!): Item
+        tags: [Tag]
     }
 
     type Mutation {
@@ -43,7 +48,7 @@ const typeDefs = `
             description: String!
             imageUrl: String
             tags: [String!]
-            itemOwner: ID!
+            itemowner: ID!
         ): Item
     }
 
