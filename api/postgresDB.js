@@ -3,16 +3,16 @@ import admin from '../database/firebase';
 
 export function getUsers() {
     return pool.query(`SELECT * FROM user_profiles`)
-        .then(response => renameId(response.rows))
+        .then(response => response.rows)
         .catch(errors => console.log(errors));
 }
 
 export function getUser(id) {
     return new Promise(async (resolve, reject) => {
         try {
-            let user = await pool.query(`SELECT * FROM user_profiles WHERE userid='${id}'`);
+            let user = await pool.query(`SELECT * FROM user_profiles WHERE id='${id}'`);
             const fbUser = await admin.auth().getUser(id);
-            user = renameId(user.rows)[0];
+            user = user.rows[0];
             user = {...user, email: fbUser.email };
             resolve(user);
         } catch(error) {
@@ -30,7 +30,7 @@ export function createUser(args, context) {
                 password: args.password,
             });
             const query = {
-                text: 'INSERT INTO user_profiles(fullname, bio, userid) VALUES($1, $2, $3) RETURNING *',
+                text: 'INSERT INTO user_profiles(fullname, bio, id) VALUES($1, $2, $3) RETURNING *',
                 values: [args.fullname, args.bio, fbUser.uid],
             }
             let pgUser = await pool.query(query.text, query.values);
@@ -52,9 +52,9 @@ export function getItems() {
 export function getItem(id) {
     return new Promise(async (resolve, reject) => {
         try {
-            let item = await pool.query(`SELECT * FROM items WHERE itemid='${id}'`);
+            let item = await pool.query(`SELECT * FROM items WHERE id='${id}'`);
             // const fbUser = await admin.auth().getUser(id);
-            item = renameItemId(item.rows)[0];
+            item = item.rows[0];
             // item = {...user, imageURL: fbUser.imageURL };
             resolve(item);
         } catch(error) {
@@ -107,10 +107,10 @@ export function getTags() {
 
 export function getItemTags(id) {
     return pool.query(`
-        SELECT items.itemid, itemtags.tagid
-            FROM items INNER JOIN itemtags ON (items.itemid = itemtags.itemid)
-            WHERE items.itemid = ${id}`)
-        .then(response => renameItemId(response.rows))
+        SELECT items.id, itemtags.tagid
+            FROM items INNER JOIN itemtags ON (items.id = itemtags.itemid)
+            WHERE items.id = ${id}`)
+        .then(response => response.rows)
         .catch(errors => console.log(errors));
 
 }
@@ -118,25 +118,9 @@ export function getItemTags(id) {
 export function getFilteredItems(id) {
     return pool.query(`
         SELECT * FROM items
-            INNER JOIN itemtags ON (items.itemid = itemtags.itemid)
+            INNER JOIN itemtags ON (items.id = itemtags.itemid)
             WHERE itemtags.tagid = ${id}`)
-        .then(response => renameItemId(response.rows))
+        .then(response => response.rows)
         .catch(errors => console.log(errors));
 
-}
-
-function renameId(rows) {
-    return rows.map(row => Object.keys(row).reduce((acc, user) => {
-           acc = {...row, id: row.userid};
-           delete acc.rowname;
-           return acc;
-        }));
-}
-
-function renameItemId(rows) {
-    return rows.map(row => Object.keys(row).reduce((acc, user) => {
-           acc = {...row, id: row.itemid};
-           delete acc.itemid;
-           return acc;
-        }));
 }
