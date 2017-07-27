@@ -19,9 +19,7 @@ const PORT = process.env.PORT;
 // TO DO: see what params to include
 app.use('*', cors());
 
-app.use(bodyParser.json());
-
-app.use('/graphql', graphqlExpress(function(req, res) {
+app.use('/graphql',bodyParser.json(), graphqlExpress(function(req, res) {
     return {
         schema,
         context: {
