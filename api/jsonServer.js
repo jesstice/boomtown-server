@@ -25,7 +25,7 @@ export function getItem(id) {
 }
 
 export function getUserOwnedItems(id) {
-    return fetch(`http://localhost:3001/items/?itemOwner=${id}`)
+    return fetch(`http://localhost:3001/items/?itemowner=${id}`)
         .then(response => response.json())
         .catch(errors => console.log(errors));
 }
