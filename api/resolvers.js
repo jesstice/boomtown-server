@@ -12,7 +12,7 @@ const resolveFunctions = {
             return context.loaders.User.load(id);
         },
         items: () => {
-            return json.getItems();
+            return psql.getItems();
         },
         item: (root, { id }, context) => {
             return context.loaders.Item.load(id);
@@ -51,6 +51,9 @@ const resolveFunctions = {
                 borrower: null
             };
             return json.postNewItem(newItem);
+        },
+        addUser: (root, args, context) => {
+            return psql.createUser(args, context) 
         }
     }
 }
