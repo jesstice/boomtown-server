@@ -43,8 +43,8 @@ const resolveFunctions = {
             return context.loaders.User.load(item.borrower);
         },
         tags: (item, args, context) => {
-            return psql.getItemTags();
-            // return context.loaders.ItemTags.load(item.id);
+            // return psql.getItemTags(item.id);
+            return context.loaders.ItemTags.load(item.id);
         }
     },
 

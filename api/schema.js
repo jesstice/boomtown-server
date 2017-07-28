@@ -17,9 +17,9 @@ const typeDefs = `
         title: String!
         description: String!
         imageurl: String
-        tags: [Tag!]
+        tags: [Tag]!
         itemowner: User!
-        createdOn: Int!
+        createdon: String!
         available: Boolean!
         borrower: User
     }
@@ -53,7 +53,7 @@ const typeDefs = `
             title: String!
             description: String!
             imageurl: String
-            tags: [AssignedTag!]
+            tags: [AssignedTag]!
             itemowner: ID!
         ): Item
     }

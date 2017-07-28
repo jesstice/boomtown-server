@@ -117,9 +117,9 @@ export function getTags() {
 
 export function getItemTags(id) {
     return pool.query(`
-        SELECT items.id, itemtags.tagid
-            FROM items INNER JOIN itemtags ON (items.id = itemtags.itemid)
-            WHERE items.id = ${id}`)
+        SELECT tags.title, tags.id
+            FROM tags INNER JOIN itemtags ON (tags.id = itemtags.tagid)
+            WHERE itemtags.itemid = ${id}`)
         .then(response => {
             return response.rows})
         .catch(errors => console.log(errors));
