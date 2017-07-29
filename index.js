@@ -7,9 +7,8 @@ import {
 } from 'graphql-server-express';
 import cors from 'cors';
 import admin from './database/firebase';
-
+import firebaseAuthMiddleware from './api/middleware';
 import schema from './api/schema';
-
 import createLoaders from './api/loaders';
 
 const GQL_PORT = 4400;
@@ -19,7 +18,11 @@ const PORT = process.env.PORT;
 // TO DO: see what params to include
 app.use('*', cors());
 
-app.use('/graphql',bodyParser.json(), graphqlExpress(function(req, res) {
+app.use(bodyParser.json());
+
+app.use('/graphql', firebaseAuthMiddleware);
+
+app.use('/graphql', graphqlExpress(function(req, res) {
     return {
         schema,
         context: {
