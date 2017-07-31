@@ -1,5 +1,4 @@
 import fetch from 'node-fetch';
-import * as json from './jsonServer';
 import * as psql from './postgresDB';
 import { pool } from '../database/index';
 

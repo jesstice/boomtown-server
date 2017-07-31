@@ -4,6 +4,9 @@ function firebaseAuthMiddleware(req, res, next) {
     if (process.env.NODE_ENV === 'development' && req.headers.origin === 'http://localhost:4400') {
         return next();
     }
+    if (req.res.req.body[0].operationName === 'addUser') {
+        return next();
+    }
     const authorization = req.header('Authorization');
     if (authorization) {
         admin.auth().verifyIdToken(authorization)

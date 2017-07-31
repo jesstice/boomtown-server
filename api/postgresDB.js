@@ -81,13 +81,9 @@ export function getUserBorrowedItems(id) {
 export function postNewItem(args) {
     return new Promise(async (resolve, reject) => {
         try {
-            // let fbUser = await admin.auth().createUser({
-            //     email: args.email,
-            //     password: args.password,
-            // });
             const itemQuery = {
-                text: 'INSERT INTO items(title, description, itemowner) VALUES($1, $2, $3) RETURNING *',
-                values: [args.title, args.description, args.itemowner],
+                text: 'INSERT INTO items(title, description, itemowner, imageurl) VALUES($1, $2, $3, $4) RETURNING *',
+                values: [args.title, args.description, args.itemowner, args.imageurl],
             }
             const newItem = await pool.query(itemQuery);
 
@@ -100,7 +96,6 @@ export function postNewItem(args) {
                 text: `INSERT INTO itemtags(itemid, tagid) VALUES ${insertTag(args.tags)}`
             }
             const tags = await pool.query(tagQuery);
-            // const user = {...pgUser.rows[0], email: fbUser.email, id: fbUser.uid};
             resolve({id: newItem.rows[0].id});
         } catch(error) {
             console.log(error);
