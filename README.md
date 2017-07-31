@@ -1,7 +1,7 @@
 # Boomtown Server
 
 ## Description
-This web server is the back-end project to support the [Boomtown web application](https://github.com/jesstice/boomtown).
+This web server is the back-end project to support the [Boomtown web application](https://github.com/jesstice/boomtown). This includes setting up a server using Node/Express/GraphQL, connecting to a PostgresSQL database, and user authentication with Firebase.
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
