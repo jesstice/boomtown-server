@@ -53,9 +53,7 @@ export function getItem(id) {
     return new Promise(async (resolve, reject) => {
         try {
             let item = await pool.query(`SELECT * FROM items WHERE id='${id}'`);
-            // const fbUser = await admin.auth().getUser(id);
             item = item.rows[0];
-            // item = {...user, imageURL: fbUser.imageURL };
             resolve(item);
         } catch(error) {
             console.log(error);

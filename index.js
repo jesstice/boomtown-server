@@ -15,7 +15,6 @@ const GQL_PORT = 4400;
 const app = express();
 const PORT = process.env.PORT;
 
-// TO DO: see what params to include
 app.use('*', cors());
 
 app.use(bodyParser.json());
